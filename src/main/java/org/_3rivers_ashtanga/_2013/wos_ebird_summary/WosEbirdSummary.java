@@ -156,17 +156,16 @@ public class WosEbirdSummary
 		.getSheetAt(0)) {
 	    if (tripIndex < 0) {
 		// This is first row
-		int col = 0;
 		for (Cell cell : row) {
 		    if ("Trip".equals(cell
 			    .getStringCellValue().trim())) {
-			tripIndex = col;
+			tripIndex = cell.getColumnIndex();
 			if (dayIndex >= 0
 				&& dataWbkIdx >= 0)
 			    break;
 		    } else if ("Day".equals(cell
 			    .getStringCellValue().trim())) {
-			dayIndex = col;
+			dayIndex = cell.getColumnIndex();
 			if (tripIndex >= 0
 				&& dataWbkIdx >= 0)
 			    break;
@@ -174,7 +173,7 @@ public class WosEbirdSummary
 			    .equals(cell
 				    .getStringCellValue()
 				    .trim())) {
-			dataWbkIdx = col;
+			dataWbkIdx = cell.getColumnIndex();
 			if (tripIndex >= 0 && dayIndex >= 0)
 			    break;
 		    }
