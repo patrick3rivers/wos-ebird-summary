@@ -3,11 +3,11 @@
     <parent>
         <groupId>org._3rivers-ashtanga._2013</groupId>
         <artifactId>_3rivers-ashtanga-parent-pom</artifactId>
-        <version>0.0.314-SNAPSHOT</version>
+        <version>0.0.314</version>
         <relativePath>../3rivers-ashtanga-parent-pom</relativePath>
     </parent>
     <artifactId>wos_ebird_summary</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
     <name>portfolio balancer</name>
     <url>http://maven.apache.org</url>
