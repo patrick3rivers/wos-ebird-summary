@@ -9,7 +9,6 @@
     <artifactId>wos_ebird_summary</artifactId>
     <version>0.0.2</version>
     <packaging>jar</packaging>
-    <name>portfolio balancer</name>
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
