@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://3rivers-ashtanga.org/2013/wos-ebird-summary/additional-species"
+	xmlns:tns="http://3rivers-ashtanga.org/2013/wos-ebird-summary/additional-species"
+	elementFormDefault="qualified">
+	<element
+		name="additional-species"
+		type="tns:additional-species-type" />
+	<complexType name="additional-species-type">
+		<sequence>
+			<element ref="tns:other-species" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<element name="other-species" type="tns:other-species-type"/>
+	<complexType name="other-species-type">
+		<sequence>
+			<element ref="tns:species"/>
+			<element ref="tns:observed-by" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<element name="species" type="string"/>
+	<element name="observed-by" type="tns:observed-by-type"/>
+	<complexType name="observed-by-type">
+		<sequence>
+			<element ref="tns:trip-name"/>
+			<element ref="tns:trip-day"/>
+			<element ref="tns:count"/>
+		</sequence>
+	</complexType>
+	<element name="trip-name" type="string"/>
+	<element name="trip-day" type="string"/>
+	<element name="count" type="integer"/>
+</schema>

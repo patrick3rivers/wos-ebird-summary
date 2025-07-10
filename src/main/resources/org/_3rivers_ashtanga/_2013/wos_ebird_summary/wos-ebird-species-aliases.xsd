@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://3rivers-ashtanga.org/2013/wos-ebird-summary/species-aliases"
+	xmlns:tns="http://3rivers-ashtanga.org/2013/wos-ebird-summary/species-aliases"
+	elementFormDefault="qualified">
+	<element
+		name="species-aliases"
+		type="tns:aliases-type" />
+	<complexType name="aliases-type">
+		<sequence>
+			<element ref="tns:aliases-for" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<element name="aliases-for" type="tns:aliases-for-type"/>
+	<complexType name="aliases-for-type">
+		<sequence>
+			<element ref="tns:alias" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+		<attribute ref="tns:term" use="required"/>
+	</complexType>
+	<element name="alias" type="string"/>
+	<attribute name="term" type="string"/>
+</schema>
