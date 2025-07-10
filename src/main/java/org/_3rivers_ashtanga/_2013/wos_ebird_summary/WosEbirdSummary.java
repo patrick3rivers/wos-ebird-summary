@@ -2,20 +2,33 @@ package org._3rivers_ashtanga._2013.wos_ebird_summary;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org._3rivers_ashtanga._2013.jaxb.jaxb_app.JAXBAppClass;
 import org._3rivers_ashtanga._2013.jaxb.jaxb_app.JAXBAppFactoryClass;
+import org._3rivers_ashtanga._2013.wos_ebird_summary.additional_species.AdditionalSpeciesType;
+import org._3rivers_ashtanga._2013.wos_ebird_summary.additional_species.ObjectFactory;
+import org._3rivers_ashtanga._2013.wos_ebird_summary.additional_species.ObservedByType;
+import org._3rivers_ashtanga._2013.wos_ebird_summary.additional_species.OtherSpeciesType;
 import org._3rivers_ashtanga._2013.wos_ebird_summary.input_parameters.ParametersType;
+import org._3rivers_ashtanga._2013.wos_ebird_summary.species_aliases.AliasesForType;
+import org._3rivers_ashtanga._2013.wos_ebird_summary.species_aliases.AliasesType;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -29,6 +42,8 @@ public class WosEbirdSummary
     extends
 	JAXBAppClass<ParametersType>
 {
+
+    static final ObjectFactory OTHER_SPECIES_OBJ_FACTORY = new ObjectFactory();
 
     static class WosEbirdSummaryFactory
 	extends
@@ -50,7 +65,7 @@ public class WosEbirdSummary
 	    try {
 		return new WosEbirdSummary(parametersURI,
 			parameters, marshaller, attMap);
-	    } catch (IOException e) {
+	    } catch (IOException | JAXBException e) {
 		e.printStackTrace();
 		throw new RuntimeException(e);
 	    }
@@ -74,6 +89,8 @@ public class WosEbirdSummary
 	    File> tripDataRowMap = new HashMap<>();
     private final Map<String,
 	    Integer> speciesRowMap = new HashMap<>();
+    private final Map<String,
+	    OtherSpeciesType> otherSpeciesMap = new HashMap<>();
 
     public Map<Pair<String, String>,
 	    File> getTripDataRowMap() {
@@ -93,7 +110,8 @@ public class WosEbirdSummary
 	ParametersType parameters,
 	Marshaller marshaller,
 	NamedNodeMap attMap)
-	throws IOException {
+	throws IOException,
+	    JAXBException {
 	super(baseUri, parameters, marshaller, attMap);
 	File resultWorkbookFile = new File(
 		this.getParametersURI()
@@ -115,16 +133,55 @@ public class WosEbirdSummary
 	    // We're going to copy source workbook to result to start
 	    this.summaryResultWorkbook = new XSSFWorkbook(
 		    new FileInputStream(
-			    resultWorkbookFile));
+			    sourceWorkbookFile));
 	    this.ebirdDataWorkbook = new XSSFWorkbook(
 		    new FileInputStream(
 			    ebirdDataWorkbookFile));
 	    initializeTripDataRows();
 	    initializeSpeciesRows();
+	    addAliasData();
 	} catch (IOException e) {
 	    throw new RuntimeException(e);
 	}
 
+    }
+
+    @SuppressWarnings("unchecked")
+    private void addAliasData() throws JAXBException {
+	String aliasDb = getParameters().getAliasDb();
+	if (aliasDb != null && !aliasDb.isBlank()) {
+	    AliasesType aliasLists = null;
+	    File aliasDbFile = new File(
+		    getParametersURI().resolve(aliasDb));
+	    JAXBContext context = JAXBContext.newInstance(
+		    AliasesType.class.getPackageName());
+	    Object dObj = context.createUnmarshaller()
+		    .unmarshal(aliasDbFile);
+	    if (dObj instanceof AliasesType)
+		aliasLists = (AliasesType) dObj;
+	    else {
+		aliasLists = ((JAXBElement<
+			AliasesType>) dObj).getValue();
+	    }
+	    for (AliasesForType wosTermInfo : aliasLists
+		    .getAliasesFor()) {
+		String wosTerm = wosTermInfo.getTerm()
+			.trim();
+		Integer termRowIdx = this.getSpeciesRowMap()
+			.get(wosTerm);
+		if (termRowIdx == null) {
+		    System.err.println(
+			    "Unknown WOS species in alias db: "
+				    + wosTerm);
+		} else {
+		    for (String alias : wosTermInfo
+			    .getAlias()) {
+			this.getSpeciesRowMap().put(
+				alias.trim(), termRowIdx);
+		    }
+		}
+	    }
+	}
     }
 
     private void initializeSpeciesRows() {
@@ -233,15 +290,64 @@ public class WosEbirdSummary
 		String tripDesc = tripName + "-" + tripDay;
 		System.out.println("Processing trip: "
 			+ tripDesc + " ...");
-		summarizeEbirdData(columnIndex,
-			dataWbkFile);
+		summarizeEbirdData(columnIndex, dataWbkFile,
+			tripName, tripDay);
 	    }
+	}
+	try {
+	    saveData();
+	} catch (IOException | JAXBException e) {
+	    e.printStackTrace();
+	    throw new RuntimeException(e);
 	}
     }
 
+    private void saveData()
+	throws FileNotFoundException,
+	    IOException,
+	    JAXBException {
+	File resultWorkbookFile = new File(
+		this.getParametersURI()
+			.resolve(this.getParameters()
+				.getSummaryOutput()));
+	resultWorkbookFile.getParentFile().mkdirs();
+	this.getSummaryResultWorkbook().write(
+		new FileOutputStream(resultWorkbookFile));
+	if (!this.getOtherSpeciesMap().isEmpty()) {
+	    File otherDataFile = new File(
+		    this.getParametersURI()
+			    .resolve(this.getParameters()
+				    .getOtherSpeciesOutput()
+				    .trim()));
+	    System.out.println(
+		    "Information on additional species written to: \n"
+			    + otherDataFile
+				    .getAbsolutePath());
+	    AdditionalSpeciesType others = OTHER_SPECIES_OBJ_FACTORY
+		    .createAdditionalSpeciesType();
+	    others.getOtherSpecies().addAll(
+		    this.getOtherSpeciesMap().values());
+	    JAXBContext context = JAXBContext
+		    .newInstance(AdditionalSpeciesType.class
+			    .getPackageName());
+	    Marshaller m = context.createMarshaller();
+	    m.setProperty("jaxb.formatted.output",
+		    Boolean.TRUE);
+	    m.marshal(OTHER_SPECIES_OBJ_FACTORY
+		    .createAdditionalSpecies(others),
+		    otherDataFile);
+
+	}
+    }
+
+    static private final Pattern SIMPLE_SPECIES_PATTERN = Pattern
+	    .compile("([^(]*).*\\(.*");
+
     private void summarizeEbirdData(
 	int tripColumnIndex,
-	File dataWbkFile) {
+	File dataWbkFile,
+	String tripName,
+	String tripDay) {
 	if (dataWbkFile == null) {
 	    System.err.println("No trip data!");
 	    return;
@@ -254,24 +360,68 @@ public class WosEbirdSummary
 	try {
 	    for (TripSummaryData speciesData : new TripSummaryDataSource(
 		    dataWbkFile)) {
+		// If this is unknown species, will be writing observation in this
+		ObservedByType otherSpeciesObservation = null;
 		String ebirdSpecies = speciesData
 			.getSpecies();
 		Integer speciesRow = getSpeciesRowMap()
 			.get(ebirdSpecies);
 		if (speciesRow == null) {
-		    System.err.print(
-			    "No Species corresponding to Ebird value: "
-				    + ebirdSpecies);
-		    String catVal = speciesData
-			    .getCategory();
-		    if (!catVal.isBlank())
-			System.err.print(" (Category: "
-				+ catVal.trim() + ")");
-		    System.err.println();
-		    return;
+		    // Try again less specifically
+		    Matcher matcher = SIMPLE_SPECIES_PATTERN
+			    .matcher(ebirdSpecies);
+		    if (matcher.matches()) {
+			ebirdSpecies = matcher.group(1)
+				.trim();
+			speciesRow = getSpeciesRowMap()
+				.get(ebirdSpecies);
+		    }
+		    if (speciesRow == null) {
+			OtherSpeciesType speciesRecord = this
+				.getOtherSpeciesMap()
+				.get(ebirdSpecies);
+			if (speciesRecord == null) {
+			    System.err.print(
+				    "No Species corresponding to Ebird value: "
+					    + ebirdSpecies);
+			    String catVal = speciesData
+				    .getCategory();
+			    if (!catVal.isBlank())
+				System.err.print(
+					" (Category: "
+						+ catVal.trim()
+						+ ")");
+			    System.err.println();
+			    speciesRecord = OTHER_SPECIES_OBJ_FACTORY
+				    .createOtherSpeciesType();
+			    speciesRecord.setSpecies(
+				    ebirdSpecies);
+			    this.getOtherSpeciesMap().put(
+				    ebirdSpecies,
+				    speciesRecord);
+			}
+			otherSpeciesObservation = OTHER_SPECIES_OBJ_FACTORY
+				.createObservedByType();
+			speciesRecord.getObservedBy().add(
+				otherSpeciesObservation);
+		    }
 		}
-		Cell outputCell = getOutputCell(speciesRow,tripColumnIndex);
-		outputCell.setCellValue(speciesData.getCount());
+		if (otherSpeciesObservation == null) {
+		    // Normal processing
+		    Cell outputCell = getOutputCell(
+			    speciesRow, tripColumnIndex);
+		    outputCell.setCellValue(
+			    speciesData.getCount());
+		} else {
+		    // Unusual bird
+		    otherSpeciesObservation.setCount(
+			    BigInteger.valueOf(speciesData
+				    .getCount()));
+		    otherSpeciesObservation
+			    .setTripDay(tripDay);
+		    otherSpeciesObservation
+			    .setTripName(tripName);
+		}
 	    }
 	} catch (IOException e) {
 	    System.err
@@ -281,11 +431,18 @@ public class WosEbirdSummary
 	}
     }
 
+    private Map<String,
+	    OtherSpeciesType> getOtherSpeciesMap() {
+	return this.otherSpeciesMap;
+    }
+
     private Cell getOutputCell(
 	Integer speciesRow,
 	int tripColumnIndex) {
+
 	return this.getSummaryResultWorkbook().getSheetAt(0)
-		.getRow(speciesRow).getCell(tripColumnIndex);
+		.getRow(speciesRow)
+		.getCell(tripColumnIndex);
     }
 
     private Map<String, Integer> getSpeciesRowMap() {

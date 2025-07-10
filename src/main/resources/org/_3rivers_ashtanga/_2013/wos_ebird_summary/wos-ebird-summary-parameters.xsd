@@ -13,6 +13,16 @@
 			<element ref="tns:ebird-data-workbook" />
 			<element ref="tns:ebird-compilation-root-dir" />
 			<element ref="tns:summary-output" />
+			<element ref="tns:other-species-output">
+				<annotation>
+					<documentation>If we run into unexpected species we need to write
+						them somewhere.
+					</documentation>
+				</annotation>
+			</element>
+			<element
+				ref="tns:alias-db"
+				minOccurs="0" />
 		</sequence>
 	</complexType>
 	<element
@@ -25,6 +35,12 @@
 		name="summary-output"
 		type="anyURI" />
 	<element
+		name="other-species-output"
+		type="anyURI" />
+	<element
 		name="ebird-compilation-root-dir"
+		type="anyURI" />
+	<element
+		name="alias-db"
 		type="anyURI" />
 </schema>
