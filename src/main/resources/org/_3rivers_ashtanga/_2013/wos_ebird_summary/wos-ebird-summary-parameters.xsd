@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://3rivers-ashtanga.org/2013/wos-ebird-summary/input-parameters"
+	xmlns:tns="http://3rivers-ashtanga.org/2013/wos-ebird-summary/input-parameters"
+	elementFormDefault="qualified">
+	<element
+		name="parameters"
+		type="tns:parameters-type" />
+	<complexType name="parameters-type">
+		<sequence>
+			<element ref="tns:workbook-source" />
+			<element ref="tns:ebird-data-workbook" />
+			<element ref="tns:ebird-compilation-root-dir" />
+			<element ref="tns:summary-output" />
+		</sequence>
+	</complexType>
+	<element
+		name="workbook-source"
+		type="anyURI" />
+	<element
+		name="ebird-data-workbook"
+		type="anyURI" />
+	<element
+		name="summary-output"
+		type="anyURI" />
+	<element
+		name="ebird-compilation-root-dir"
+		type="anyURI" />
+</schema>

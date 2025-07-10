@@ -1,0 +1,15 @@
+<section
+	xml:id="section.reed-instrument-notes"
+	xmlns:xl="http://www.w3.org/1999/xlink"
+	xmlns="http://docbook.org/ns/docbook"
+	xmlns:m="http://www.w3.org/1998/Math/MathML"
+	xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Notes and Usage</title>
+	<para>
+		Use Kent Fiala's software tool <link xl:href="https://www.faintlake.com/eBird/">eBird checklist compiler</link>
+		to download ebird results, save the name of the downloaded file in the <emphasis>Trip Report Compilation Output</emphasis>
+		column of the 
+		
+	</para>
+
+</section>
