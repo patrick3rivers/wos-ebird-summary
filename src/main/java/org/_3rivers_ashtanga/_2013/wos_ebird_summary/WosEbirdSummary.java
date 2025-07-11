@@ -170,7 +170,7 @@ public class WosEbirdSummary
 		Integer termRowIdx = this.getSpeciesRowMap()
 			.get(wosTerm);
 		if (termRowIdx == null) {
-		    System.err.println(
+		    System.out.println(
 			    "Unknown WOS species in alias db: "
 				    + wosTerm);
 		} else {
@@ -290,6 +290,7 @@ public class WosEbirdSummary
 		String tripDesc = tripName + "-" + tripDay;
 		System.out.println("Processing trip: "
 			+ tripDesc + " ...");
+		System.out.flush();
 		summarizeEbirdData(columnIndex, dataWbkFile,
 			tripName, tripDay);
 	    }
@@ -349,11 +350,11 @@ public class WosEbirdSummary
 	String tripName,
 	String tripDay) {
 	if (dataWbkFile == null) {
-	    System.err.println("No trip data!");
+	    System.out.println("No trip data!");
 	    return;
 	}
 	if (!dataWbkFile.exists()) {
-	    System.err.println("No data file: "
+	    System.out.println("No data file: "
 		    + dataWbkFile.getAbsolutePath());
 	    return;
 	}
@@ -371,27 +372,27 @@ public class WosEbirdSummary
 		    Matcher matcher = SIMPLE_SPECIES_PATTERN
 			    .matcher(ebirdSpecies);
 		    if (matcher.matches()) {
-			ebirdSpecies = matcher.group(1)
+			String match = matcher.group(1)
 				.trim();
 			speciesRow = getSpeciesRowMap()
-				.get(ebirdSpecies);
+				.get(match);
 		    }
 		    if (speciesRow == null) {
 			OtherSpeciesType speciesRecord = this
 				.getOtherSpeciesMap()
 				.get(ebirdSpecies);
 			if (speciesRecord == null) {
-			    System.err.print(
+			    System.out.print(
 				    "No Species corresponding to Ebird value: "
 					    + ebirdSpecies);
 			    String catVal = speciesData
 				    .getCategory();
 			    if (!catVal.isBlank())
-				System.err.print(
+				System.out.print(
 					" (Category: "
 						+ catVal.trim()
 						+ ")");
-			    System.err.println();
+			    System.out.println();
 			    speciesRecord = OTHER_SPECIES_OBJ_FACTORY
 				    .createOtherSpeciesType();
 			    speciesRecord.setSpecies(
@@ -424,7 +425,7 @@ public class WosEbirdSummary
 		}
 	    }
 	} catch (IOException e) {
-	    System.err
+	    System.out
 		    .println("error processing data file : "
 			    + dataWbkFile + "\n"
 			    + e.getMessage());
