@@ -1,1 +1,1 @@
-xxx
+Fixed problem summarizing taxa

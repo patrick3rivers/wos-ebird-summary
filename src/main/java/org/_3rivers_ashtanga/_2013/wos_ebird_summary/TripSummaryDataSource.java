@@ -5,8 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -19,8 +19,8 @@ class TripSummaryDataSource
 	Iterable<TripSummaryData>
 {
 
-    private final List<
-	    TripSummaryData> summaryList = new LinkedList<>();
+    private final SortedSet<
+	    TripSummaryData> summaryList = new TreeSet<>();
 
     public TripSummaryDataSource(File dataWbkFile)
 	throws FileNotFoundException,
@@ -122,7 +122,7 @@ class TripSummaryDataSource
 	return getSummaryList().iterator();
     }
 
-    private List<TripSummaryData> getSummaryList() {
+    private SortedSet<TripSummaryData> getSummaryList() {
 	return this.summaryList;
     }
 

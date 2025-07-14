@@ -32,6 +32,8 @@ import org._3rivers_ashtanga._2013.wos_ebird_summary.species_aliases.AliasesType
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -203,8 +205,10 @@ public class WosEbirdSummary
     }
 
     private void initializeTripDataRows() {
-	File ebirdDataRootDir = new File(getParameters()
-		.getEbirdCompilationRootDir());
+	File ebirdDataRootDir = new File(this
+		.getParametersURI()
+		.resolve(this.getParameters()
+			.getEbirdCompilationRootDir()));
 	int tripIndex = -1;
 	int dayIndex = -1;
 	int dataWbkIdx = -1;
@@ -283,16 +287,25 @@ public class WosEbirdSummary
 		tripName = tripCellValue.trim();
 	    }
 	    if (tripName != null) {
-		tripDay = dayRow.getCell(columnIndex)
-			.getStringCellValue().trim();
+		XSSFCell tripDayCell = dayRow
+			.getCell(columnIndex);
+		XSSFCellStyle style = tripDayCell
+			.getCellStyle();
+		tripDay = tripDayCell.getStringCellValue()
+			.trim();
 		File dataWbkFile = getTripDataRowMap()
 			.get(Pair.of(tripName, tripDay));
 		String tripDesc = tripName + "-" + tripDay;
 		System.out.println("Processing trip: "
 			+ tripDesc + " ...");
+		if (style.getFont().getStrikeout()) {
+		    System.out
+			    .println("   Trip cancelled.");
+		} else {
+		    summarizeEbirdData(columnIndex,
+			    dataWbkFile, tripName, tripDay);
+		}
 		System.out.flush();
-		summarizeEbirdData(columnIndex, dataWbkFile,
-			tripName, tripDay);
 	    }
 	}
 	try {
@@ -359,10 +372,10 @@ public class WosEbirdSummary
 	    return;
 	}
 	try {
+	    Integer speciesRowToSum = null;
+	    int speciesSum = 0;
 	    for (TripSummaryData speciesData : new TripSummaryDataSource(
 		    dataWbkFile)) {
-		// If this is unknown species, will be writing observation in this
-		ObservedByType otherSpeciesObservation = null;
 		String ebirdSpecies = speciesData
 			.getSpecies();
 		Integer speciesRow = getSpeciesRowMap()
@@ -377,52 +390,32 @@ public class WosEbirdSummary
 			speciesRow = getSpeciesRowMap()
 				.get(match);
 		    }
-		    if (speciesRow == null) {
-			OtherSpeciesType speciesRecord = this
-				.getOtherSpeciesMap()
-				.get(ebirdSpecies);
-			if (speciesRecord == null) {
-			    System.out.print(
-				    "No Species corresponding to Ebird value: "
-					    + ebirdSpecies);
-			    String catVal = speciesData
-				    .getCategory();
-			    if (!catVal.isBlank())
-				System.out.print(
-					" (Category: "
-						+ catVal.trim()
-						+ ")");
-			    System.out.println();
-			    speciesRecord = OTHER_SPECIES_OBJ_FACTORY
-				    .createOtherSpeciesType();
-			    speciesRecord.setSpecies(
-				    ebirdSpecies);
-			    this.getOtherSpeciesMap().put(
-				    ebirdSpecies,
-				    speciesRecord);
-			}
-			otherSpeciesObservation = OTHER_SPECIES_OBJ_FACTORY
-				.createObservedByType();
-			speciesRecord.getObservedBy().add(
-				otherSpeciesObservation);
-		    }
 		}
-		if (otherSpeciesObservation == null) {
+		if (speciesRow != null) {
 		    // Normal processing
-		    Cell outputCell = getOutputCell(
-			    speciesRow, tripColumnIndex);
-		    outputCell.setCellValue(
-			    speciesData.getCount());
+		    if (speciesRowToSum != speciesRow) {
+			if (speciesRowToSum != null) {
+			    Cell outputCell = getOutputCell(
+				    speciesRowToSum,
+				    tripColumnIndex);
+			    outputCell.setCellValue(
+				    speciesSum);
+			}
+			speciesSum = 0; // clear out reported data
+			speciesRowToSum = speciesRow; // set up next value to report
+		    }
+		    // accumulate this row
+		    speciesSum += speciesData.getCount();
 		} else {
-		    // Unusual bird
-		    otherSpeciesObservation.setCount(
-			    BigInteger.valueOf(speciesData
-				    .getCount()));
-		    otherSpeciesObservation
-			    .setTripDay(tripDay);
-		    otherSpeciesObservation
-			    .setTripName(tripName);
+		    reportUnusualBird(speciesData, tripName,
+			    tripDay);
 		}
+	    }
+	    // Finish up reporting with last species
+	    if (speciesRowToSum != null) {
+		Cell outputCell = getOutputCell(
+			speciesRowToSum, tripColumnIndex);
+		outputCell.setCellValue(speciesSum);
 	    }
 	} catch (IOException e) {
 	    System.out
@@ -432,8 +425,40 @@ public class WosEbirdSummary
 	}
     }
 
-    private Map<String,
-	    OtherSpeciesType> getOtherSpeciesMap() {
+    private void reportUnusualBird(
+	TripSummaryData speciesData,
+	String tripName,
+	String tripDay) {
+	OtherSpeciesType speciesRecord = this
+		.getOtherSpeciesMap()
+		.get(speciesData.getSpecies());
+	System.out.print(
+		"No Species corresponding to Ebird value: "
+			+ speciesData.getSpecies());
+	String catVal = speciesData.getCategory();
+	if (!catVal.isBlank())
+	    System.out.print(
+		    " (Category: " + catVal.trim() + ")");
+	System.out.println();
+	speciesRecord = OTHER_SPECIES_OBJ_FACTORY
+		.createOtherSpeciesType();
+	speciesRecord.setSpecies(speciesData.getSpecies());
+	this.getOtherSpeciesMap().put(
+		speciesData.getSpecies(), speciesRecord);
+	ObservedByType otherSpeciesObservation = OTHER_SPECIES_OBJ_FACTORY
+		.createObservedByType();
+	speciesRecord.getObservedBy()
+		.add(otherSpeciesObservation);
+	// Unusual bird
+	otherSpeciesObservation.setCount(
+		BigInteger.valueOf(speciesData.getCount()));
+	otherSpeciesObservation.setTripDay(tripDay);
+	otherSpeciesObservation.setTripName(tripName);
+    }
+
+    private Map<String, OtherSpeciesType>
+
+	    getOtherSpeciesMap() {
 	return this.otherSpeciesMap;
     }
 
