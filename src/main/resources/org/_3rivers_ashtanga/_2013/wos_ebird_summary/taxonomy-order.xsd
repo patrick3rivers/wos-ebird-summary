@@ -1,0 +1,20 @@
+<schema
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://3rivers-ashtanga.org/2013/wos-ebird-summary/taxonomy-order"
+	xmlns:tns="http://3rivers-ashtanga.org/2013/wos-ebird-summary/taxonomy-order"
+	elementFormDefault="qualified">
+	<element name="taxa" type="tns:taxa-type"/>
+	<complexType name="taxa-type">
+		<sequence>
+			<element name="taxon" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<element name="taxon" type="tns:taxon-type"/>
+	<complexType name="taxon-type">
+		<sequence>
+			<element name="taxon-order" type="integer"/>
+			<element name="category" type="string"/>
+			<element name="common-name" type="string"/>
+		</sequence>
+	</complexType>
+</schema>

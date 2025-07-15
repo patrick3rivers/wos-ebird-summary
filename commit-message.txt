@@ -1,1 +1,1 @@
-Tagging before included other species in output
+Tagging, other species in output now. Packaging next.

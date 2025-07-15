@@ -10,6 +10,7 @@
 	<complexType name="parameters-type">
 		<sequence>
 			<element ref="tns:workbook-source" />
+			<element ref="tns:ebird-taxonomy-workbook"/>
 			<element ref="tns:ebird-data-workbook" />
 			<element ref="tns:ebird-compilation-root-dir" />
 			<element ref="tns:summary-output" />
@@ -40,6 +41,13 @@
 	<element
 		name="ebird-compilation-root-dir"
 		type="anyURI" />
+			<element
+		name="ebird-taxonomy-workbook"
+		type="anyURI">
+		<annotation><documentation>Tried loading this as reources, but
+		didn't work.</documentation></annotation>
+		</element>
+		
 	<element
 		name="alias-db"
 		type="anyURI" />

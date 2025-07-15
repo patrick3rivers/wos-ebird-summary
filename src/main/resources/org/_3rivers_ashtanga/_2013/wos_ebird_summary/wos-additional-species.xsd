@@ -16,6 +16,8 @@
 	<complexType name="other-species-type">
 		<sequence>
 			<element ref="tns:species"/>
+			<element ref="tns:taxon-order"/>
+			<element ref="tns:ebird-category"/>
 			<element ref="tns:observed-by" minOccurs="0" maxOccurs="unbounded"/>
 		</sequence>
 	</complexType>
@@ -29,6 +31,8 @@
 		</sequence>
 	</complexType>
 	<element name="trip-name" type="string"/>
+	<element name="taxon-order" type="integer"/>
 	<element name="trip-day" type="string"/>
 	<element name="count" type="integer"/>
+	<element name="ebird-category" type="string"/>
 </schema>

@@ -1,0 +1,41 @@
+<section
+	xml:id="section.reed-instrument-notes"
+	xmlns:xl="http://www.w3.org/1999/xlink"
+	xmlns="http://docbook.org/ns/docbook"
+	xmlns:m="http://www.w3.org/1998/Math/MathML"
+	xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Notes and Usage</title>
+	<section>
+		<title>Running the Program</title>
+		<para>
+			The program is distributed as the executable JAR (Java ARchive) file
+			<code>wos_ebird_summary.jar</code>
+			. We assume the user is comfortable with the command line interface
+			on their computer for example, the Terminal.app program on Mac
+			computers). We also assume an appropriate installation of java is on
+			the machine (program was developed under Java version 11).
+		</para>
+		<para>
+			Assuming the file wos_ebird_summary.jar is in the current directory,
+			the program is run with the command:
+			<programlisting><![CDATA[
+		$ java -jar wos_ebird_summary.jar parameters.xml
+		]]></programlisting>
+			where
+			<code>parameters.xml</code>
+			is an xml file that conforms to the schema found at
+		</para>
+	</section>
+	<para>
+		Use Kent Fiala's software tool
+		<link xl:href="https://www.faintlake.com/eBird/">eBird checklist compiler</link>
+		to download ebird results, save the name of the downloaded file in the
+		<emphasis>Trip Report Compilation Output</emphasis>
+		column of the
+	</para>
+	<section>
+		<title>Release Notes</title>
+		<para>Uses ebird taxonomy v2024 for sorting taxonomy of additional
+			species</para>
+	</section>
+</section>
