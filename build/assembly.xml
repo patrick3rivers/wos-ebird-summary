@@ -14,5 +14,23 @@
 			</includes>
 			<outputDirectory>doc.html</outputDirectory>
 		</fileSet>
+		<fileSet>
+			<directory>${project.build.resources}/org/_3rivers_ashtanga/_2013/wos_ebird_summary
+			</directory>
+			<includes>
+				<include>wos-ebird-summary-parameters.xsd</include>
+			</includes>
+			<outputDirectory>resources</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>${project.basedir}/distribution</directory>
+			<includes><include>*</include>
+			</includes>
+		</fileSet>
 	</fileSets>
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>jars</outputDirectory>
+		</dependencySet>
+	</dependencySets>
 </assembly>

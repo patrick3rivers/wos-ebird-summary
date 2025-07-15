@@ -1,0 +1,1 @@
+java -cp "classes/*" org._3rivers_ashtanga._2013.wos_ebird_summary.WosEbirdSummary
