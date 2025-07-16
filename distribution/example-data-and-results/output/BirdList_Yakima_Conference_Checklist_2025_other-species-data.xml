@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<additional-species xmlns="http://3rivers-ashtanga.org/2013/wos-ebird-summary/additional-species">
+    <other-species>
+        <species>Tricolored Blackbird</species>
+        <taxon-order>33530</taxon-order>
+        <ebird-category>species</ebird-category>
+        <observed-by>
+            <trip-name>Burrowing Owl  Tour</trip-name>
+            <trip-day>Friday</trip-day>
+            <count>4</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Tree/Violet-green Swallow</species>
+        <taxon-order>23848</taxon-order>
+        <ebird-category>slash</ebird-category>
+        <observed-by>
+            <trip-name>Going Home:
+Chinook Pass</trip-name>
+            <trip-day>Monday</trip-day>
+            <count>10</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Black Tern</species>
+        <taxon-order>6651</taxon-order>
+        <ebird-category>species</ebird-category>
+        <observed-by>
+            <trip-name>Sunnyside Wildlife Area</trip-name>
+            <trip-day>Friday</trip-day>
+            <count>1</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Whimbrel</species>
+        <taxon-order>5951</taxon-order>
+        <ebird-category>species</ebird-category>
+        <observed-by>
+            <trip-name>Burrowing Owl  Tour</trip-name>
+            <trip-day>Friday</trip-day>
+            <count>1</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Common/Barrow's Goldeneye</species>
+        <taxon-order>726</taxon-order>
+        <ebird-category>slash</ebird-category>
+        <observed-by>
+            <trip-name>White Pass West</trip-name>
+            <trip-day>Saturday</trip-day>
+            <count>1</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Northern Mockingbird</species>
+        <taxon-order>27870</taxon-order>
+        <ebird-category>species</ebird-category>
+        <observed-by>
+            <trip-name>Horse Heaven Hills</trip-name>
+            <trip-day>Sunday</trip-day>
+            <count>2</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Sandhill Crane</species>
+        <taxon-order>5643</taxon-order>
+        <ebird-category>species</ebird-category>
+        <observed-by>
+            <trip-name>Toppenish NWR</trip-name>
+            <trip-day>Sunday</trip-day>
+            <count>2</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Great-tailed Grackle</species>
+        <taxon-order>33587</taxon-order>
+        <ebird-category>species</ebird-category>
+        <observed-by>
+            <trip-name>Burrowing Owl  Tour</trip-name>
+            <trip-day>Friday</trip-day>
+            <count>1</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Lesser Nighthawk</species>
+        <taxon-order>3431</taxon-order>
+        <ebird-category>species</ebird-category>
+        <observed-by>
+            <trip-name>Vantage, Wanapum &amp; Getty’s Cove</trip-name>
+            <trip-day>Sunday</trip-day>
+            <count>1</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Golden/Bald Eagle</species>
+        <taxon-order>8277</taxon-order>
+        <ebird-category>slash</ebird-category>
+        <observed-by>
+            <trip-name>Umptanum Road-Wenas Loop</trip-name>
+            <trip-day>Sunday</trip-day>
+            <count>1</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Empidonax sp.</species>
+        <taxon-order>16830</taxon-order>
+        <ebird-category>spuh</ebird-category>
+        <observed-by>
+            <trip-name>Eschbach Nature Area &amp; Painted Rocks</trip-name>
+            <trip-day>Saturday</trip-day>
+            <count>1</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Franklin's Gull</species>
+        <taxon-order>6428</taxon-order>
+        <ebird-category>species</ebird-category>
+        <observed-by>
+            <trip-name>Sunnyside Wildlife Area</trip-name>
+            <trip-day>Friday</trip-day>
+            <count>1</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Red-naped/Red-breasted Sapsucker</species>
+        <taxon-order>11026</taxon-order>
+        <ebird-category>slash</ebird-category>
+        <observed-by>
+            <trip-name>Ahtanum</trip-name>
+            <trip-day>Friday</trip-day>
+            <count>2</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Red-naped x Red-breasted Sapsucker (hybrid)</species>
+        <taxon-order>11024</taxon-order>
+        <ebird-category>hybrid</ebird-category>
+        <observed-by>
+            <trip-name>Chinook Pass</trip-name>
+            <trip-day>Sunday</trip-day>
+            <count>5</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Hammond's/Dusky Flycatcher</species>
+        <taxon-order>16800</taxon-order>
+        <ebird-category>slash</ebird-category>
+        <observed-by>
+            <trip-name>Umptanum Road-Wenas Loop</trip-name>
+            <trip-day>Sunday</trip-day>
+            <count>1</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Larus sp.</species>
+        <taxon-order>6547</taxon-order>
+        <ebird-category>spuh</ebird-category>
+        <observed-by>
+            <trip-name>Vantage, Wanapum &amp; Getty’s Cove</trip-name>
+            <trip-day>Friday</trip-day>
+            <count>2</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>White-faced Ibis</species>
+        <taxon-order>7383</taxon-order>
+        <ebird-category>species</ebird-category>
+        <observed-by>
+            <trip-name>Burrowing Owl  Tour</trip-name>
+            <trip-day>Friday</trip-day>
+            <count>3</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Downy/Hairy Woodpecker</species>
+        <taxon-order>11337</taxon-order>
+        <ebird-category>slash</ebird-category>
+        <observed-by>
+            <trip-name>Photographer-Friendly</trip-name>
+            <trip-day>Saturday</trip-day>
+            <count>1</count>
+        </observed-by>
+    </other-species>
+    <other-species>
+        <species>Accipitrine hawk sp. (former Accipiter sp.)</species>
+        <taxon-order>8209</taxon-order>
+        <ebird-category>spuh</ebird-category>
+        <observed-by>
+            <trip-name>Yakima River Canyon-Hike Umtanum Ck.</trip-name>
+            <trip-day>Saturday</trip-day>
+            <count>1</count>
+        </observed-by>
+    </other-species>
+</additional-species>

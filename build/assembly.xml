@@ -26,8 +26,6 @@
 		<fileSet>
 			<directory>${project.basedir}/distribution/example-data-and-results</directory>
 			<includes>
-				<include>*//*</include>
-				<include>*</include>
 			</includes>
 			<outputDirectory>example-data-and-results</outputDirectory>
 		</fileSet>
