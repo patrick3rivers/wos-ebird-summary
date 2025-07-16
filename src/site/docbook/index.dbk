@@ -5,37 +5,244 @@
 	xmlns:m="http://www.w3.org/1998/Math/MathML"
 	xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Notes and Usage</title>
+	<para>
+		The program is as a zip archive file
+		<code>wos_ebird_summary-</code>
+		<emphasis> project version
+		</emphasis>
+		<code>-distribution.zip</code>
+		. We assume
+		<itemizedlist>
+			<listitem>
+				<para>The user is comfortable with the command line interface on
+					their computer (for example, the Terminal.app program on Mac
+					computers).
+				</para>
+			</listitem>
+			<listitem>
+				<para>an appropriate installation of java is on the machine (program
+					was developed under Java version 11)
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					An installation of a standard 'shell program' --such as bash or
+					csh-- is available on the current path of executable files. (The
+					developer uses
+					<code>bash</code>
+					).
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		The directory you get when you unzip the archive file, the directory
+		<code>wos_ebird_summary-</code>
+		<emphasis>project-version</emphasis>
+		has the following contents:
+		<itemizedlist>
+			<listitem>
+				<para>
+					<code>bin</code>
+					, which contains the executable file
+					<link xl:href="../bin/wos-field-trip-summary.sh">wos-field-trip-summary.sh</link>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<code>doc.html</code>
+					, which contains this file in
+					<code>index.html</code>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<code>example-data-and-results</code>
+					, a directory containing example input and output for running the
+					program (discussed below)
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<code>jars</code>
+					, containing runtime libraries used by
+					<code>bin/wos-field-trip-summary.sh</code>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<code>resources</code>
+					, containing primarily the file
+					<code>wos-bird-summary-parameters.xsd</code>
+					, a formal description of the input required by
+					<code>bin/wos-field-trip-summary.sh</code>
+					.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<code>README.txt</code>
+					, which points user to this documentation.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
 	<section>
 		<title>Running the Program</title>
 		<para>
-			The program is distributed as the executable JAR (Java ARchive) file
-			<code>wos_ebird_summary.jar</code>
-			. We assume the user is comfortable with the command line interface
-			on their computer for example, the Terminal.app program on Mac
-			computers). We also assume an appropriate installation of java is on
-			the machine (program was developed under Java version 11).
-		</para>
-		<para>
-			Assuming the file wos_ebird_summary.jar is in the current directory,
+			Assuming you current directory is
+			<code>wos_ebird_summary-</code>
+			<emphasis>project version</emphasis>
 			the program is run with the command:
 			<programlisting><![CDATA[
-		$ java -jar wos_ebird_summary.jar parameters.xml
+		$ bin/wos-field-trip-summary.sh parameters.xml
 		]]></programlisting>
 			where
 			<code>parameters.xml</code>
 			is an xml file that conforms to the schema found at
+			<link xl:href="../resources/wos-ebird-summary-parameters.xsd">wos-ebird-summary-parameters.xsd</link>
+			.
 		</para>
+		<section>
+			<title>Specifying program parameters</title>
+			<para>
+				The file
+				<code>parameters.xml</code>
+				in the example directory contains the following text shown in
+				<xref linkend="fig.parameters-text" />
+				. The important bits are the text specified within the parameter
+				tags. For example, the text
+				<programlisting><![CDATA[<p:workbook-source>input/Conference-Checklist-Template.xlsx</p:workbook-source>]]></programlisting>
+				says that the Excel file to use as a template for the generated
+				output is found in the file with the path
+				<code>input/Conference-Checklist-Template.xlsx</code>
+				(relative to the location of the parameter) path. Table
+				<xref linkend="tab.parameter-descriptions" />
+				gives a brief description of the parameters.
+			</para>
+			<figure xml:id="fig.parameters-text">
+				<title>Example Parameter Values</title>
+				<programlisting><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<p:parameters
+	xmlns:p="http://3rivers-ashtanga.org/2013/wos-ebird-summary/input-parameters"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://3rivers-ashtanga.org/2013/wos-ebird-summary/input-parameters ../resources/wos-ebird-summary-parameters.xsd ">
+	<p:workbook-source>input/Conference-Checklist-Template.xlsx</p:workbook-source>
+	<p:ebird-data-workbook>input/trips-checklists-trip-reports.xlsx</p:ebird-data-workbook>
+	<p:ebird-taxonomy-workbook>input/eBird_taxonomy.xlsx</p:ebird-taxonomy-workbook>
+	<p:alias-db>input/alias-db.xml</p:alias-db>
+	<p:ebird-compilation-root-dir>input/compilation-spreadsheets</p:ebird-compilation-root-dir>
+	<p:summary-output>output/Conference-Checklist-Summary.xlsx</p:summary-output>
+	<p:other-species-output>output/BirdList_Yakima_Conference_Checklist_2025_other-species-data.xml</p:other-species-output>
+</p:parameters>
+					]]>
+				</programlisting>
+			</figure>
+			<table xml:id="tab.parameter-descriptions">
+				<caption>Program Parameters</caption>
+				<thead>
+					<tr>
+						<th>Parameter</th>
+						<th>Value</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>workbook-source</td>
+						<td>path to Excel Workbook File</td>
+						<td>The first worksheet of the workbook contains the Field trips
+							to be summarized as rows. The first row has one or more columns
+							for each trip, one column for each day the trip ran. The second
+							row contains the days the trips were run. This is followed by a
+							row for each expected species.
+						</td>
+					</tr>
+					<tr>
+						<td>ebird-data-workbook</td>
+						<td>path to Excel Workbook File</td>
+						<td>Contains a row for each trip/day pair. Columns list the
+							leader, the ebird trip report URLs or a list of Ebird checklist
+							URLs recording the trip observations. But most important is the
+							name of an Excel workbook that contains the summary data for the
+							trip report or checklists. This is described more fully below.
+						</td>
+					</tr>
+					<tr>
+						<td>ebird-taxonomy-workbook</td>
+						<td>path to excel workbook containing Ebird's current taxonomy
+						</td>
+						<td>
+							This file is available from EBird--make sure you have latest.
+							This is used for reporting species/taxa not mentioned in the
+							excel file given for
+							<code>workbook-source</code>
+							.
+						</td>
+					</tr>
+					<tr>
+						<td>alias-db</td>
+						<td>path to an XML file</td>
+						<td>
+							This file contains the WOS species name used for some Ebird
+							species when the taxonomies differ. It conforms to the schema in
+							<link xl:href="../resources/wos-ebird-species-aliases.xsd" />
+							wos-ebird-species-aliases.xsd
+						</td>
+					</tr>
+					<tr>
+						<td>ebird-compilation-root-dir</td>
+						<td>path to file containing Excel files</td>
+						<td>
+							this is the directory containing the files summarizing trip
+							observations that are given in the file given
+							<code>ebird-workbook-data</code>
+							in the column headed
+							<code>Trip Report Compilation Output</code>
+						</td>
+					</tr>
+					<tr>
+						<td>summary-output</td>
+						<td>File location</td>
+						<td>Where to write the program output as an Excel File
+						</td>
+					</tr>
+					<tr>
+						<td>other-species-output</td>
+						<td>Output file location</td>
+						<td>
+							Deprecated. This is a file that describes species that were
+							observed but not listed in the
+							<code>workbook-source</code>
+							workbook. These observations are now included in the output
+							workbook.
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section>
+			<title>Generating summary data for trip reports and checklists
+			</title>
+			<para>
+				Once you've obtained the checklists or trip reports for a particular
+				report and record it in the appropriate row in
+				<code>ebird-data-workbook</code>
+				, use Kent Fiala's software tool
+				<link xl:href="https://www.faintlake.com/eBird/">eBird checklist compiler</link>
+				to download ebird results. Save the file in the directory specified
+				as the
+				<code>ebird-compilation-root-dir</code>
+				and copy the name of the workbook file in the
+				<emphasis>Trip Report Compilation Output</emphasis>
+				column of the trip's row.
+			</para>
+		</section>
 	</section>
-	<para>
-		Use Kent Fiala's software tool
-		<link xl:href="https://www.faintlake.com/eBird/">eBird checklist compiler</link>
-		to download ebird results, save the name of the downloaded file in the
-		<emphasis>Trip Report Compilation Output</emphasis>
-		column of the
-	</para>
 	<section>
 		<title>Release Notes</title>
-		<para>Uses ebird taxonomy v2024 for sorting taxonomy of additional
-			species</para>
+		<para>This version uses Ebird taxonomy v2024 for sorting taxonomy of
+			additional species
+		</para>
 	</section>
 </section>

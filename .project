@@ -20,11 +20,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>data-folder</name>
-			<type>2</type>
-			<location>/Users/patrick_paulson/Library/CloudStorage/OneDrive-Personal/Documents/WOS-WFO-2025-Conference/Birdlist-compilation-20250715</location>
-		</link>
-	</linkedResources>
 </projectDescription>

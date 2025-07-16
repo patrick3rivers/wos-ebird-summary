@@ -10,8 +10,8 @@
 	<complexType name="parameters-type">
 		<sequence>
 			<element ref="tns:workbook-source" />
-			<element ref="tns:ebird-taxonomy-workbook"/>
 			<element ref="tns:ebird-data-workbook" />
+			<element ref="tns:ebird-taxonomy-workbook"/>
 			<element
 				ref="tns:alias-db"
 				minOccurs="0" />

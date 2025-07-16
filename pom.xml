@@ -7,7 +7,7 @@
         <relativePath>../3rivers-ashtanga-parent-pom</relativePath>
     </parent>
     <artifactId>wos_ebird_summary</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5-SNAPSHOT</version>
     <packaging>jar</packaging>
     <url>http://maven.apache.org</url>
     <properties>
@@ -15,8 +15,21 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.3rivers-ashtanga.2013.jaxb</groupId>
-            <artifactId>jaxb-app</artifactId>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
