@@ -10,7 +10,7 @@
 		<relativePath>../3rivers-ashtanga-parent-pom</relativePath>
 	</parent>
 	<artifactId>wos_ebird_summary</artifactId>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -81,7 +81,7 @@
 				<executions>
 					<execution>
 						<id>docbook-pre-site-html</id>
-						<phase>pre-site</phase>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>generate-html</goal>
 						</goals>

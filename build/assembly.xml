@@ -8,11 +8,19 @@
 	</formats>
 	<fileSets>
 		<fileSet>
-			<directory>${project.build.directory}/site/docbook</directory>
+			<directory>${project.build.directory}/generated-site/resources/docbook</directory>
 			<includes>
 				<include>*</include>
 			</includes>
 			<outputDirectory>doc.html</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>${project.basedir}</directory>
+			<includes>
+				<include>pom.xml</include>
+				<include>build/assembly.xml</include>
+			</includes>
+			<outputDirectory>resources</outputDirectory>
 		</fileSet>
 		<fileSet>
 			<directory>${project.basedir}/src/main/resources/org/_3rivers_ashtanga/_2013/wos_ebird_summary
