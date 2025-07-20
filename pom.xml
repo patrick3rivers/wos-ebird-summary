@@ -104,17 +104,17 @@
 					</execution>
 				</executions>
 				<configuration>
-					<imgSrcPath>../images/docbook/</imgSrcPath>
+					<imgSrcPath>images/docbook/</imgSrcPath>
 					<chunkedOutput>true</chunkedOutput>
 					<chunkFirstSections>1</chunkFirstSections>
-					<chunkSectionDepth>4</chunkSectionDepth>
+					<chunkSectionDepth>2</chunkSectionDepth>
 					<htmlStylesheet>../css/docbook.css</htmlStylesheet>
 					<sourceDirectory>src/site/docbook</sourceDirectory>
 					<includes>*.dbk</includes>
 					<generateSectionTocLevel>1</generateSectionTocLevel>
 					<tocSectionDepth>2</tocSectionDepth>
 					<tocMaxDepth>4</tocMaxDepth>
-					<targetDirectory>target/generated-site/resources/docbook</targetDirectory>
+					<targetDirectory>target/generated-site/resources</targetDirectory>
 				</configuration>
 			</plugin>
 			<plugin>
