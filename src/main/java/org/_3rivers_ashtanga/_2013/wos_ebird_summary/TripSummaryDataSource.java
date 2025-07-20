@@ -1,7 +1,5 @@
 package org._3rivers_ashtanga._2013.wos_ebird_summary;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
@@ -22,11 +20,9 @@ class TripSummaryDataSource
     private final SortedSet<
 	    TripSummaryData> summaryList = new TreeSet<>();
 
-    public TripSummaryDataSource(File dataWbkFile)
+    public TripSummaryDataSource(XSSFWorkbook dataWbk)
 	throws FileNotFoundException,
 	    IOException {
-	XSSFWorkbook dataWbk = new XSSFWorkbook(
-		new FileInputStream(dataWbkFile));
 	XSSFSheet dataSheet = dataWbk.getSheetAt(0);
 	int catIdx = -1;
 	int speciesIdx = -1;

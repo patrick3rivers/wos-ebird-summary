@@ -4,10 +4,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://3rivers-ashtanga.org/2013/wos-ebird-summary/input-parameters ../resources/wos-ebird-summary-parameters.xsd ">
 	<p:workbook-source>input/Conference-Checklist-Template.xlsx</p:workbook-source>
-	<p:ebird-data-workbook>input/trips-checklists-trip-reports.xlsx</p:ebird-data-workbook>
 	<p:ebird-taxonomy-workbook>input/eBird_taxonomy.xlsx</p:ebird-taxonomy-workbook>
+	<p:ebird-data-workbook>input/trips-checklists-trip-reports.xlsx</p:ebird-data-workbook>
 	<p:alias-db>input/alias-db.xml</p:alias-db>
 	<p:ebird-compilation-root-dir>input/compilation-spreadsheets</p:ebird-compilation-root-dir>
 	<p:summary-output>output/Conference-Checklist-Summary.xlsx</p:summary-output>
-	<p:other-species-output>output/BirdList_Yakima_Conference_Checklist_2025_other-species-data.xml</p:other-species-output>
 </p:parameters>

@@ -10,20 +10,13 @@
 	<complexType name="parameters-type">
 		<sequence>
 			<element ref="tns:workbook-source" />
-			<element ref="tns:ebird-data-workbook" />
 			<element ref="tns:ebird-taxonomy-workbook"/>
+			<element ref="tns:ebird-data-workbook" />
 			<element
 				ref="tns:alias-db"
 				minOccurs="0" />
 			<element ref="tns:ebird-compilation-root-dir" />
 			<element ref="tns:summary-output" />
-			<element ref="tns:other-species-output">
-				<annotation>
-					<documentation>If we run into unexpected species we need to write
-						them somewhere.
-					</documentation>
-				</annotation>
-			</element>
 		</sequence>
 	</complexType>
 	<element

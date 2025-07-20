@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://3rivers-ashtanga.org/2013/wos-ebird-summary/cached-workbooks"
+	xmlns:tns="http://3rivers-ashtanga.org/2013/wos-ebird-summary/cached-workbooks"
+	elementFormDefault="qualified">
+	<element
+		name="cached-workbooks"
+		type="tns:cached-workbooks-type" />
+	<complexType name="cached-workbooks-type">
+		<sequence>
+			<element
+				ref="tns:cached-workbook"
+				minOccurs="0"
+				maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+	<element
+		name="cached-workbook"
+		type="tns:cached-workbook-type" />
+	<complexType name="cached-workbook-type">
+		<sequence>
+			<element ref="tns:route-name" />
+			<element ref="tns:trip-instance" />
+			<element ref="tns:trip-data" />
+			<element ref="tns:cached-workbook-file" />
+		</sequence>
+	</complexType>
+	<element
+		name="route-name"
+		type="string" />
+	<element
+		name="trip-instance"
+		type="string" />
+	<element
+		name="trip-data"
+		type="string" />
+	<element
+		name="cached-workbook-file"
+		type="string">
+		<annotation>
+			<documentation>This is a relative file path</documentation>
+		</annotation>
+	</element>
+</schema>

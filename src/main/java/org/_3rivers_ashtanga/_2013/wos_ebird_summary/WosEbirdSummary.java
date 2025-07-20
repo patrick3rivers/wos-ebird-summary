@@ -28,7 +28,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org._3rivers_ashtanga._2013.jaxb.jaxb_app.JAXBAppClass;
 import org._3rivers_ashtanga._2013.jaxb.jaxb_app.JAXBAppFactoryClass;
-import org._3rivers_ashtanga._2013.wos_ebird_summary.additional_species.AdditionalSpeciesType;
 import org._3rivers_ashtanga._2013.wos_ebird_summary.additional_species.ObjectFactory;
 import org._3rivers_ashtanga._2013.wos_ebird_summary.additional_species.ObservedByType;
 import org._3rivers_ashtanga._2013.wos_ebird_summary.additional_species.OtherSpeciesType;
@@ -119,7 +118,7 @@ public class WosEbirdSummary
 
     private final XSSFWorkbook summaryResultWorkbook;
     private final Map<Pair<String, String>,
-	    File> tripDataRowMap = new HashMap<>();
+	    String> tripDataRowMap = new HashMap<>();
 
     private final Map<String,
 	    Integer> speciesRowMap = new HashMap<>();
@@ -137,6 +136,8 @@ public class WosEbirdSummary
 	    Integer> tripColumnMap = new HashMap<>();
 
     private Integer firstTripColumn;
+
+    private final TripSummaryDataSourceFactory dataSourceFactory;
 
     private WosEbirdSummary(
 	URI baseUri,
@@ -159,6 +160,9 @@ public class WosEbirdSummary
 			.resolve(this.getParameters()
 				.getEbirdDataWorkbook()));
 	resultWorkbookFile.getParentFile().mkdirs();
+	this.dataSourceFactory = new TripSummaryDataSourceFactory(
+		new File(this.getParametersURI().resolve(
+			this.getParameters().getEbirdCompilationRootDir())));
 	try {
 	    Files.copy(sourceWorkbookFile.toPath(),
 		    resultWorkbookFile.toPath(),
@@ -225,17 +229,30 @@ public class WosEbirdSummary
 		this.getTripColumnMap().put(
 			Pair.of(tripName, tripDay),
 			tripDayCell.getColumnIndex());
-		File dataWbkFile = getTripDataRowMap()
+		String tripLists = getTripDataRowMap()
 			.get(Pair.of(tripName, tripDay));
+		if (tripLists == null)
+		    tripLists = "";
+		if (!tripLists.isBlank() && tripLists.charAt(0) == '"') {
+		    tripLists = tripLists.substring(1,tripLists.length()-2);
+		}
 		String tripDesc = tripName + "-" + tripDay;
 		System.out.println("Processing trip: "
 			+ tripDesc + " ...");
+		if (tripDesc.equals("Naneum-Colockum-Saturday")) {
+		    System.out.println("Our problem trip.");
+		}
 		if (style.getFont().getStrikeout()) {
 		    System.out
 			    .println("   Trip cancelled.");
 		} else {
-		    summarizeEbirdData(columnIndex,
-			    dataWbkFile, tripName, tripDay);
+		    try {
+			summarizeEbirdData(columnIndex,
+			    tripLists, tripName, tripDay);
+		    } catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		    }
 		}
 		System.out.flush();
 	    }
@@ -287,7 +304,8 @@ public class WosEbirdSummary
 			return CellReference
 				.convertNumToColString(cell
 					.getColumnIndex())
-				+ Integer.toString(lastCountRow+1)
+				+ Integer.toString(
+					lastCountRow + 1)
 				+ " + COUNTIF("
 				+ CellReference
 					.convertNumToColString(
@@ -561,11 +579,11 @@ public class WosEbirdSummary
 		cell.setCellFormula("sum("
 			+ CellReference
 				.convertNumToColString(0)
-			+ row.getRowNum() + ":"
+			+ row.getRowNum() + 1 + ":"
 			+ CellReference
 				.convertNumToColString(
 					currentLastCell - 1)
-			+ row.getRowNum() + ")");
+			+ row.getRowNum() + 1 + ")");
 
 	    }
 	}
@@ -599,7 +617,7 @@ public class WosEbirdSummary
     }
 
     private Map<Pair<String, String>,
-	    File> getTripDataRowMap() {
+	    String> getTripDataRowMap() {
 	return tripDataRowMap;
     }
 
@@ -687,13 +705,9 @@ public class WosEbirdSummary
 
     private void initializeTripDataRows(
 	XSSFWorkbook ebirdDataWbk) {
-	File ebirdDataRootDir = new File(this
-		.getParametersURI()
-		.resolve(this.getParameters()
-			.getEbirdCompilationRootDir()));
 	int tripIndex = -1;
 	int dayIndex = -1;
-	int dataWbkIdx = -1;
+	int checklistIdx = -1;
 
 	for (Row row : ebirdDataWbk.getSheetAt(0)) {
 	    if (tripIndex < 0) {
@@ -703,31 +717,34 @@ public class WosEbirdSummary
 			    .getStringCellValue().trim())) {
 			tripIndex = cell.getColumnIndex();
 			if (dayIndex >= 0
-				&& dataWbkIdx >= 0)
+				&& checklistIdx >= 0)
 			    break;
 		    } else if ("Day".equals(cell
 			    .getStringCellValue().trim())) {
 			dayIndex = cell.getColumnIndex();
 			if (tripIndex >= 0
-				&& dataWbkIdx >= 0)
+				&& checklistIdx >= 0)
 			    break;
-		    } else if ("Trip Report Compilation Output"
+		    } else if ("Trip Reports/Checklists"
 			    .equals(cell
 				    .getStringCellValue()
 				    .trim())) {
-			dataWbkIdx = cell.getColumnIndex();
+			checklistIdx = cell.getColumnIndex();
 			if (tripIndex >= 0 && dayIndex >= 0)
 			    break;
 		    }
 		}
 	    } else {
-		File ebirdDataWbkFile = null;
-		String dataWbkPath = row.getCell(dataWbkIdx)
+		String checkLists = row.getCell(checklistIdx)
 			.getStringCellValue();
-		if (!dataWbkPath.isBlank())
-		    ebirdDataWbkFile = new File(
-			    ebirdDataRootDir,
-			    dataWbkPath.trim());
+		
+		if (checkLists != null)
+		    checkLists = checkLists.trim();
+		else checkLists = "";
+		if (!checkLists.isBlank() && checkLists.charAt(0) == '"') {
+		    // Take off first and last character
+		    checkLists = checkLists.substring(1,checkLists.length()-2);
+		}
 		this.getTripDataRowMap().put(Pair.of(
 			row.getCell(tripIndex)
 				.getStringCellValue()
@@ -735,7 +752,7 @@ public class WosEbirdSummary
 			row.getCell(dayIndex)
 				.getStringCellValue()
 				.trim()),
-			ebirdDataWbkFile);
+			checkLists);
 
 	    }
 	}
@@ -789,32 +806,25 @@ public class WosEbirdSummary
 	resultWorkbookFile.getParentFile().mkdirs();
 	this.getSummaryResultWorkbook().write(
 		new FileOutputStream(resultWorkbookFile));
-	if (!this.getOtherSpeciesMap().isEmpty()) {
-	    File otherDataFile = new File(
-		    this.getParametersURI()
-			    .resolve(this.getParameters()
-				    .getOtherSpeciesOutput()
-				    .trim()));
-	    System.out.println(
-		    "Information on additional species written to: \n"
-			    + otherDataFile
-				    .getAbsolutePath());
-	    AdditionalSpeciesType others = OTHER_SPECIES_OBJ_FACTORY
-		    .createAdditionalSpeciesType();
-	    others.getOtherSpecies().addAll(
-		    this.getOtherSpeciesMap().values());
-	    JAXBContext context = JAXBContext
-		    .newInstance(AdditionalSpeciesType.class
-			    .getPackageName());
-	    Marshaller m = context.createMarshaller();
-	    m.setProperty("jaxb.formatted.output",
-		    Boolean.TRUE);
-	    m.marshal(OTHER_SPECIES_OBJ_FACTORY
-		    .createAdditionalSpecies(others),
-		    otherDataFile);
 
-	}
+	/*
+	 * Deprecated
+	 */
+	/*
+	 * if (!this.getOtherSpeciesMap().isEmpty()) { File otherDataFile = new File(
+	 * this.getParametersURI() .resolve(this.getParameters()
+	 * .getOtherSpeciesOutput() .trim())); System.out.println(
+	 * "Information on additional species written to: \n" + otherDataFile
+	 * .getAbsolutePath()); AdditionalSpeciesType others = OTHER_SPECIES_OBJ_FACTORY
+	 * .createAdditionalSpeciesType(); others.getOtherSpecies().addAll(
+	 * this.getOtherSpeciesMap().values()); JAXBContext context = JAXBContext
+	 * .newInstance(AdditionalSpeciesType.class .getPackageName()); Marshaller m =
+	 * context.createMarshaller(); m.setProperty("jaxb.formatted.output",
+	 * Boolean.TRUE); m.marshal(OTHER_SPECIES_OBJ_FACTORY
+	 * .createAdditionalSpecies(others), otherDataFile); }
+	 */
     }
+
 
     private void setFirstTripColumn(
 	Integer firstTripColumn) {
@@ -823,69 +833,61 @@ public class WosEbirdSummary
 
     private void summarizeEbirdData(
 	int tripColumnIndex,
-	File dataWbkFile,
+	String tripLists,
 	String tripName,
-	String tripDay) {
-	if (dataWbkFile == null) {
-	    System.out.println("No trip data!");
+	String tripDay) throws IOException {
+	if (tripLists == null || tripLists.isBlank()) {
+	    System.err.println(tripName + "-" + tripDay + ": No trip data!");
 	    return;
 	}
-	if (!dataWbkFile.exists()) {
-	    System.out.println("No data file: "
-		    + dataWbkFile.getAbsolutePath());
-	    return;
-	}
-	try {
-	    Integer speciesRowToSum = null;
-	    int speciesSum = 0;
-	    for (TripSummaryData speciesData : new TripSummaryDataSource(
-		    dataWbkFile)) {
-		String ebirdSpecies = speciesData
-			.getSpecies();
-		Integer speciesRow = getSpeciesRowMap()
-			.get(ebirdSpecies);
-		if (speciesRow == null) {
-		    // Try again less specifically
-		    Matcher matcher = SIMPLE_SPECIES_PATTERN
-			    .matcher(ebirdSpecies);
-		    if (matcher.matches()) {
-			String match = matcher.group(1)
-				.trim();
-			speciesRow = getSpeciesRowMap()
-				.get(match);
-		    }
-		}
-		if (speciesRow != null) {
-		    // Normal processing
-		    if (speciesRowToSum != speciesRow) {
-			if (speciesRowToSum != null) {
-			    Cell outputCell = getOutputCell(
-				    speciesRowToSum,
-				    tripColumnIndex);
-			    outputCell.setCellValue(
-				    speciesSum);
-			}
-			speciesSum = 0; // clear out reported data
-			speciesRowToSum = speciesRow; // set up next value to report
-		    }
-		    // accumulate this row
-		    speciesSum += speciesData.getCount();
-		} else {
-		    reportUnusualBird(speciesData, tripName,
-			    tripDay);
-		}
+	Integer speciesRowToSum = null;
+	int speciesSum = 0;
+	for (TripSummaryData speciesData : getDataSourceFactory()
+	    .getTripDataSource(tripName,tripDay,tripLists)) {
+	String ebirdSpecies = speciesData
+		.getSpecies();
+	Integer speciesRow = getSpeciesRowMap()
+		.get(ebirdSpecies);
+	if (speciesRow == null) {
+	    // Try again less specifically
+	    Matcher matcher = SIMPLE_SPECIES_PATTERN
+		    .matcher(ebirdSpecies);
+	    if (matcher.matches()) {
+		String match = matcher.group(1)
+			.trim();
+		speciesRow = getSpeciesRowMap()
+			.get(match);
 	    }
-	    // Finish up reporting with last species
-	    if (speciesRowToSum != null) {
-		Cell outputCell = getOutputCell(
-			speciesRowToSum, tripColumnIndex);
-		outputCell.setCellValue(speciesSum);
-	    }
-	} catch (IOException e) {
-	    System.out
-		    .println("error processing data file : "
-			    + dataWbkFile + "\n"
-			    + e.getMessage());
 	}
+	if (speciesRow != null) {
+	    // Normal processing
+	    if (speciesRowToSum != speciesRow) {
+		if (speciesRowToSum != null) {
+		    Cell outputCell = getOutputCell(
+			    speciesRowToSum,
+			    tripColumnIndex);
+		    outputCell.setCellValue(
+			    speciesSum);
+		}
+		speciesSum = 0; // clear out reported data
+		speciesRowToSum = speciesRow; // set up next value to report
+	    }
+	    // accumulate this row
+	    speciesSum += speciesData.getCount();
+	} else {
+	    reportUnusualBird(speciesData, tripName,
+		    tripDay);
+	}
+	}
+	// Finish up reporting with last species
+	if (speciesRowToSum != null) {
+	Cell outputCell = getOutputCell(
+		speciesRowToSum, tripColumnIndex);
+	outputCell.setCellValue(speciesSum);
+	}
+    }
+
+    private TripSummaryDataSourceFactory getDataSourceFactory() {
+	return this.dataSourceFactory;
     }
 }

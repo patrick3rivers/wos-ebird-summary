@@ -1,92 +1,178 @@
+
 <section
 	xml:id="section.reed-instrument-notes"
 	xmlns:xl="http://www.w3.org/1999/xlink"
 	xmlns="http://docbook.org/ns/docbook"
 	xmlns:m="http://www.w3.org/1998/Math/MathML"
 	xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title>Notes and Usage</title>
-	<para>
-		The program is as a zip archive file
-		<code>wos_ebird_summary-</code>
-		<emphasis> project version
-		</emphasis>
-		<code>-distribution.zip</code>
-		. We assume
-		<itemizedlist>
-			<listitem>
-				<para>The user is comfortable with the command line interface on
-					their computer (for example, the Terminal.app program on Mac
-					computers).
-				</para>
-			</listitem>
-			<listitem>
-				<para>an appropriate installation of java is on the machine (program
-					was developed under Java version 11)
-				</para>
-			</listitem>
-			<listitem>
+	<title>Field Trip checklist Summary Creator</title>
+	<section>
+		<title> Notes and Usage
+		</title>
+		<para>
+			The program is as a zip archive file
+			<code>wos_ebird_summary-</code>
+			<emphasis> project version
+			</emphasis>
+			<code>-distribution.zip</code>
+			. We assume
+			<itemizedlist>
+				<listitem>
+					<para>The user is comfortable with the command line interface on
+						their computer (for example, the Terminal.app program on Mac
+						computers).
+					</para>
+				</listitem>
+				<listitem>
+					<para>an appropriate installation of java is on the machine
+						(program was developed under Java version 11)
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						An installation of a standard 'shell program' --such as bash or
+						csh-- is available on the current path of executable files. (The
+						developer uses
+						<code>bash</code>
+						).
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			The directory you get when you unzip the archive file,
+			<code>wos_ebird_summary-</code>
+			<emphasis>project-version</emphasis>
+			has the following contents:
+			<itemizedlist>
+				<listitem>
+					<para>
+						<code>bin</code>
+						, which contains the executable file
+						<link xl:href="../bin/wos-field-trip-summary.sh">wos-field-trip-summary.sh</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<code>doc.html</code>
+						, which contains this file in
+						<code>index.html</code>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<code>example-data-and-results</code>
+						, a directory containing example input and output for running the
+						program (discussed below)
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<code>jars</code>
+						, containing runtime libraries used by
+						<code>bin/wos-field-trip-summary.sh</code>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<code>resources</code>
+						, containing primarily the file
+						<code>wos-bird-summary-parameters.xsd</code>
+						, a formal description of the input required by
+						<code>bin/wos-field-trip-summary.sh</code>
+						.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<code>README.txt</code>
+						, which points user to this documentation.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</section>
+	<section>
+		<title>Program Output</title>
+		<para>
+			The program produces a workbook like that depicted in
+			<xref linkend="fig.summary-output-individuals" />
+			and
+			<xref linkend="fig.summary-output-taxa" />
+			.
+		</para>
+		<figure xml:id="fig.summary-output-individuals">
+			<title>Summary workbook: counts of individuals</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata
+						fileref="summary-output-individuals.jpg"
+						width="6in" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+		<para>
+			The count of individuals observed on a trip is the
+			<emphasis>minimum</emphasis>
+			number of individuals of the species seen. These values are summed
+			across all trips and shown in the last column.
+		</para>
+		<figure xml:id="fig.summary-output-taxa">
+			<title>Summary workbook: counts of taxa</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata
+						fileref="summary-output-taxa.jpg"
+						width="6in" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+		<para>
+			For each trip a count is calculated for the total number of unique
+			<emphasis>species</emphasis>
+			observed on the trips. For species that are listed in the supplied
+			workbook template (see
+			<xref linkend="sect.workbook-source" />
+			below), these are listed on the appropriate rows. For species that
+			are not on the template are added, in taxonomical order, to the end
+			of the table.
+		</para>
+		<para>
+			We also summarize counts for taxa other that species
+			<footnote>
 				<para>
-					An installation of a standard 'shell program' --such as bash or
-					csh-- is available on the current path of executable files. (The
-					developer uses
-					<code>bash</code>
-					).
-				</para>
-			</listitem>
-		</itemizedlist>
-	</para>
-	<para>
-		The directory you get when you unzip the archive file, the directory
-		<code>wos_ebird_summary-</code>
-		<emphasis>project-version</emphasis>
-		has the following contents:
-		<itemizedlist>
-			<listitem>
-				<para>
-					<code>bin</code>
-					, which contains the executable file
-					<link xl:href="../bin/wos-field-trip-summary.sh">wos-field-trip-summary.sh</link>
-				</para>
-			</listitem>
-			<listitem>
-				<para>
-					<code>doc.html</code>
-					, which contains this file in
-					<code>index.html</code>
-				</para>
-			</listitem>
-			<listitem>
-				<para>
-					<code>example-data-and-results</code>
-					, a directory containing example input and output for running the
-					program (discussed below)
-				</para>
-			</listitem>
-			<listitem>
-				<para>
-					<code>jars</code>
-					, containing runtime libraries used by
-					<code>bin/wos-field-trip-summary.sh</code>
-				</para>
-			</listitem>
-			<listitem>
-				<para>
-					<code>resources</code>
-					, containing primarily the file
-					<code>wos-bird-summary-parameters.xsd</code>
-					, a formal description of the input required by
-					<code>bin/wos-field-trip-summary.sh</code>
+					A
+					<emphasis>taxon</emphasis>
+					(plural: taxa) is a taxonomic category. Examples of taxa recognized
+					by ebird are
+					<emphasis>Subspecies</emphasis>
+					,
+					<emphasis>Hybrid</emphasis>
+					, and
+					<emphasis>Spuh</emphasis>
+					<link
+						xl:href="https://support.ebird.org/en/support/solutions/articles/48000837816-the-ebird-taxonomy#anchorCategories">The eBird Taxonomy</link>
 					.
 				</para>
-			</listitem>
-			<listitem>
-				<para>
-					<code>README.txt</code>
-					, which points user to this documentation.
-				</para>
-			</listitem>
-		</itemizedlist>
-	</para>
+			</footnote>
+			. Rows for these are also listed at the end of the output in
+			taxonomical order.
+		</para>
+		<section>
+			<title>
+				A note on exes (
+				<emphasis>Xs</emphasis>
+				) in Ebird checklists
+			</title>
+			<para>Ebird grudgingly allows 'X' to be used as a count in checklists
+				to indicate a individuals of a species were identified but no count
+				was kept. This is convenient for birders who really don't want to
+				count every FEPA, AMRO, and RBGU they see. While it's likely an 'X'
+				indicates a substantial number of individuals were seen we can only
+				safely assume that 1 individual was seen, so 'X' is treated as '1'.
+			</para>
+		</section>
+	</section>
 	<section>
 		<title>Running the Program</title>
 		<para>
@@ -108,7 +194,7 @@
 			<para>
 				The file
 				<code>parameters.xml</code>
-				in the example directory contains the following text shown in
+				in the example directory contains text shown in
 				<xref linkend="fig.parameters-text" />
 				. The important bits are the text specified within the parameter
 				tags. For example, the text
@@ -128,12 +214,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://3rivers-ashtanga.org/2013/wos-ebird-summary/input-parameters ../resources/wos-ebird-summary-parameters.xsd ">
 	<p:workbook-source>input/Conference-Checklist-Template.xlsx</p:workbook-source>
-	<p:ebird-data-workbook>input/trips-checklists-trip-reports.xlsx</p:ebird-data-workbook>
 	<p:ebird-taxonomy-workbook>input/eBird_taxonomy.xlsx</p:ebird-taxonomy-workbook>
+	<p:ebird-data-workbook>input/trips-checklists-trip-reports.xlsx</p:ebird-data-workbook>
 	<p:alias-db>input/alias-db.xml</p:alias-db>
 	<p:ebird-compilation-root-dir>input/compilation-spreadsheets</p:ebird-compilation-root-dir>
 	<p:summary-output>output/Conference-Checklist-Summary.xlsx</p:summary-output>
-	<p:other-species-output>output/BirdList_Yakima_Conference_Checklist_2025_other-species-data.xml</p:other-species-output>
 </p:parameters>
 					]]>
 				</programlisting>
@@ -159,16 +244,6 @@
 						</td>
 					</tr>
 					<tr>
-						<td>ebird-data-workbook</td>
-						<td>path to Excel Workbook File</td>
-						<td>Contains a row for each trip/day pair. Columns list the
-							leader, the ebird trip report URLs or a list of Ebird checklist
-							URLs recording the trip observations. But most important is the
-							name of an Excel workbook that contains the summary data for the
-							trip report or checklists. This is described more fully below.
-						</td>
-					</tr>
-					<tr>
 						<td>ebird-taxonomy-workbook</td>
 						<td>path to excel workbook containing Ebird's current taxonomy
 						</td>
@@ -178,6 +253,14 @@
 							excel file given for
 							<code>workbook-source</code>
 							.
+						</td>
+					</tr>
+					<tr>
+						<td>ebird-data-workbook</td>
+						<td>path to Excel Workbook File</td>
+						<td>Contains a row for each trip/day pair. Columns list the
+							leader, the Ebird trip report URLs and/or checklist URLS or IDs
+							recording the trip observations.
 						</td>
 					</tr>
 					<tr>
@@ -193,12 +276,9 @@
 					<tr>
 						<td>ebird-compilation-root-dir</td>
 						<td>path to file containing Excel files</td>
-						<td>
-							this is the directory containing the files summarizing trip
-							observations that are given in the file given
-							<code>ebird-workbook-data</code>
-							in the column headed
-							<code>Trip Report Compilation Output</code>
+						<td> this is the directory containing the files summarizing trip
+							observations. These are cached as the program runs so that
+							additional runs won't result in thrashing the internet so much.
 						</td>
 					</tr>
 					<tr>
@@ -207,42 +287,281 @@
 						<td>Where to write the program output as an Excel File
 						</td>
 					</tr>
-					<tr>
-						<td>other-species-output</td>
-						<td>Output file location</td>
-						<td>
-							Deprecated. This is a file that describes species that were
-							observed but not listed in the
-							<code>workbook-source</code>
-							workbook. These observations are now included in the output
-							workbook.
-						</td>
-					</tr>
 				</tbody>
 			</table>
 		</section>
 		<section>
-			<title>Generating summary data for trip reports and checklists
-			</title>
-			<para>
-				Once you've obtained the checklists or trip reports for a particular
-				report and record it in the appropriate row in
-				<code>ebird-data-workbook</code>
-				, use Kent Fiala's software tool
-				<link xl:href="https://www.faintlake.com/eBird/">eBird checklist compiler</link>
-				to download ebird results. Save the file in the directory specified
-				as the
-				<code>ebird-compilation-root-dir</code>
-				and copy the name of the workbook file in the
-				<emphasis>Trip Report Compilation Output</emphasis>
-				column of the trip's row.
-			</para>
+			<title>Description of Excel Workbooks used for input/output</title>
+			<para>Only the first worksheet of workbooks is used.</para>
+			<section xml:id="sect.workbook-source">
+				<title>
+					<code>workbook-source</code>
+					: The Field Trip Summary Template Workbook
+				</title>
+				<para>
+					<xref linkend="fig.template-workbook" />
+					shows what the Source Workbook looks like. This workbook can
+					printed out in large format and used to collect daily totals during
+					the conference. This workbook is completely copied into the
+					resulting workbook before species count data is added.
+				</para>
+				<figure xml:id="fig.template-workbook">
+					<title>Field Trip Summary Template Workbook</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								width="8in"
+								fileref="Trip-sightings-template.svg" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<para>
+					Specific cells of the workbook are used to determine how to collect
+					and summarize data for the final workbook. We are primarily
+					concerned with two regions of the spread sheet, the list of field
+					trips across the top and the expected species listed down the left
+					side. These are more fully described in
+					<xref linkend="tab.template-cell-ranges" />
+					. Excel Cell names are used to make the description explicit where
+					possible. The following variables for shorthand :
+					<itemizedlist>
+						<listitem>
+							<para>
+								<emphasis>N</emphasis>
+								: the rightmost non-empty column in workbook
+							</para>
+						</listitem>
+						<listitem>
+							<para>
+								<emphasis>M</emphasis>
+								: the highest row number of a non-empty row.
+							</para>
+						</listitem>
+						<listitem>
+							<para>
+								<emphasis>T</emphasis>
+								: the column of the first cell in the range of trip names
+							</para>
+						</listitem>
+					</itemizedlist>
+				</para>
+				<table xml:id="tab.template-cell-ranges">
+					<caption>Template Workbook Areas used to generate output
+					</caption>
+					<colgroup>
+						<col
+							span="1"
+							style="width: 10%" />
+						<col
+							span="2"
+							style="width: 20%" />
+						<col
+							span="2"
+							style="width: 20%" />
+						<col
+							span="2"
+							style="width: 50%" />
+					</colgroup>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>First Cell</th>
+							<th>Last Cell</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Species Names</td>
+							<td>A3</td>
+							<td>
+								A
+								<emphasis>M</emphasis>
+							</td>
+							<td>Name of species expected to be seen on one or more field
+								trips.
+							</td>
+						</tr>
+						<tr>
+							<td>Trip Name</td>
+							<td>
+								Leftmost Cell in the region B2:B
+								<emphasis>N</emphasis>
+								that isn't empty (column
+								<emphasis>T</emphasis>
+								).
+							</td>
+							<td> Last non-empty Cell in row B
+							</td>
+							<td>Identifies field trips, may be multiple instances on
+								different days or by different groups.
+							</td>
+						</tr>
+						<tr>
+							<td>Trip Instance</td>
+							<td>
+								<emphasis>T</emphasis>
+								2
+							</td>
+							<td>
+								<emphasis>T</emphasis>
+								:
+								<emphasis>N</emphasis>
+							</td>
+							<td>
+								Combined with the associated trip name, this identifies a field
+								trip that will be associated with Ebird data in the
+								<code>ebird data workbook</code>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+			<section>
+				<title>
+					<code>ebird-data-workbook</code>
+					: Field Trip Checklist Inventory
+				</title>
+				<para>
+					<xref linkend="fig.checklist-workbook" />
+					shows what the checklist inventory workbook looks like. This
+					workbook is used to record the ebird trip reports and checklists
+					associated with field trip occurrences.
+				</para>
+				<figure xml:id="fig.checklist-workbook">
+					<title>Field Trip Checklist Inventory Workbook</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								width="8in"
+								fileref="ebird-checklist-workbook.jpg" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<para>
+					This work book associates ebird data with the trip occurrences
+					identified by the
+					<emphasis>Trip Name</emphasis>
+					and
+					<emphasis>Trip Instance</emphasis>
+					regions of the Field Trip Summary Workbook (
+					<xref linkend="tab.template-cell-ranges" />
+					) The "Trip Report/Checklists" column of the workbook lists the
+					data needed to collect species count summaries for the specified
+					trip occurrence. Required values for these columns are described in
+					<xref linkend="tab.inventory-cell-ranges" />
+					.
+				</para>
+				<table xml:id="tab.inventory-cell-ranges">
+					<caption>Checklist Inventory Workbook Requirements
+					</caption>
+					<colgroup>
+						<col
+							span="1"
+							style="width: 10%" />
+						<col
+							span="2"
+							style="width: 20%" />
+						<col
+							span="2"
+							style="width: 20%" />
+						<col
+							span="2"
+							style="width: 50%" />
+					</colgroup>
+					<thead>
+						<tr>
+							<th>Column</th>
+							<th>First Cell</th>
+							<th>Last Cell</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Trip</td>
+							<td>B2</td>
+							<td>
+								B
+								<emphasis>M</emphasis>
+							</td>
+							<td>
+								Value corresponds to a cell value in the
+								<code>Trip Name</code>
+								region of the Template Workbook
+							</td>
+						</tr>
+						<tr>
+							<td>Day</td>
+							<td>C2</td>
+							<td>
+								C
+								<emphasis>M</emphasis>
+							</td>
+							<td>
+								Value corresponds to a cell value in the
+								<code>Trip Instance</code>
+								region of the Template Workbook
+							</td>
+						</tr>
+						<tr>
+							<td>Trip Reports/Checklists</td>
+							<td> G2
+							</td>
+							<td>
+								G
+								<emphasis>M</emphasis>
+							</td>
+							<td>List of checklists and/or trip reports recorded during the
+								field trip.
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<section>
+					<title>EBird Checklist and Trip Report Entry</title>
+					<para>
+						The
+						<code>Trip Reports/Checklists</code>
+						cell for a trip occurrence can contain multiple checklists or trip
+						reports. Items can be separated by spaces or new lines
+						<footnote>
+							<para>to enter a newline in Excel, use &lt;Alt> &lt;Return> (or
+								&lt;Option>&lt;Return> on a Mac)</para>
+						</footnote>
+					</para>
+					<para>
+						Checklists can be identified either by the full Ebird URI (e.g
+						'https://ebird.org/checklist/S248387310') or by just the checklist
+						id ('S248387310' in this case). On the other hand, Trip Reports
+						are identified by their full URI (e.g.
+						https://ebird.org/tripreport/386641)
+						<footnote>
+							<para> This is for the convenience of the developer. If you
+								entered the value 386641 it uniquely identifies a trip report,
+								but Excel treats it as numeric data -- which means my code would
+								have to do a bunch of extra tests to determine what value is in
+								the cell.
+							</para>
+						</footnote>
+					</para>
+				</section>
+			</section>
 		</section>
 	</section>
 	<section>
 		<title>Release Notes</title>
 		<para>This version uses Ebird taxonomy v2024 for sorting taxonomy of
 			additional species
+		</para>
+	</section>
+	<section>
+		<title>Acknowledgments</title>
+		<para>
+			This software would not be possible without the availability of Kent
+			Fiala's invaluable web page at
+			<link xl:href="https://www.faintlake.com/eBird/compiler/">https://www.faintlake.com/eBird/compiler/
+			</link>
 		</para>
 	</section>
 </section>
