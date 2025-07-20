@@ -239,9 +239,6 @@ public class WosEbirdSummary
 		String tripDesc = tripName + "-" + tripDay;
 		System.out.println("Processing trip: "
 			+ tripDesc + " ...");
-		if (tripDesc.equals("Naneum-Colockum-Saturday")) {
-		    System.out.println("Our problem trip.");
-		}
 		if (style.getFont().getStrikeout()) {
 		    System.out
 			    .println("   Trip cancelled.");
@@ -291,63 +288,6 @@ public class WosEbirdSummary
 	    e.printStackTrace();
 	    throw new RuntimeException(e);
 	}
-    }
-
-    private void addTaxaTotalCountRow(
-	final int lastCountRow)
-	throws BadTemplateException {
-	Function<Cell,
-		String> sumAndCountFunction = new Function<>() {
-
-		    @Override
-		    public String apply(Cell cell) {
-			return CellReference
-				.convertNumToColString(cell
-					.getColumnIndex())
-				+ Integer.toString(
-					lastCountRow + 1)
-				+ " + COUNTIF("
-				+ CellReference
-					.convertNumToColString(
-						cell.getColumnIndex())
-				+ Integer.toString(
-					lastCountRow + 2)
-				+ ":"
-				+ CellReference
-					.convertNumToColString(
-						cell.getColumnIndex())
-				+ (cell.getRowIndex())
-				+ ",\">0\")";
-		    }
-
-		};
-	addTotalCountRow("Total Taxa", sumAndCountFunction);
-
-    }
-
-    private void addTotalCountRow(String heading)
-	throws BadTemplateException {
-	Function<Cell,
-		String> countifFunction = new Function<>() {
-
-		    @Override
-		    public String apply(Cell cell) {
-			return "COUNTIF(" + CellReference
-				.convertNumToColString(cell
-					.getColumnIndex())
-				+ Integer.toString(
-					FIRST_SPECIES_ROW
-						+ 1)
-				+ ":"
-				+ CellReference
-					.convertNumToColString(
-						cell.getColumnIndex())
-				+ (cell.getRowIndex())
-				+ ",\">0\")";
-		    }
-
-		};
-	addTotalCountRow(heading, countifFunction);
     }
 
     private void addAdditionalData(
@@ -501,10 +441,10 @@ public class WosEbirdSummary
 	Cell summaryCell = row.getCell(i);
 	summaryCell.setCellFormula("sum("
 		+ CellReference.convertNumToColString(0)
-		+ row.getRowNum() + ":"
+		+ (row.getRowNum() + 1) + ":"
 		+ CellReference.convertNumToColString(
-			row.getLastCellNum() - 1)
-		+ row.getRowNum() + ")");
+			row.getLastCellNum() - 2)
+		+ (row.getRowNum() + 1) + ")");
 	for (ObservedByType tripInfo : species
 		.getObservedBy()) {
 	    Integer tripColumn = this.getTripColumnMap()
@@ -515,6 +455,63 @@ public class WosEbirdSummary
 		    .setCellValue(tripColumn);
 	}
 
+    }
+
+    private void addTaxaTotalCountRow(
+	final int lastCountRow)
+	throws BadTemplateException {
+	Function<Cell,
+		String> sumAndCountFunction = new Function<>() {
+
+		    @Override
+		    public String apply(Cell cell) {
+			return CellReference
+				.convertNumToColString(cell
+					.getColumnIndex())
+				+ Integer.toString(
+					lastCountRow + 1)
+				+ " + COUNTIF("
+				+ CellReference
+					.convertNumToColString(
+						cell.getColumnIndex())
+				+ Integer.toString(
+					lastCountRow + 2)
+				+ ":"
+				+ CellReference
+					.convertNumToColString(
+						cell.getColumnIndex())
+				+ (cell.getRowIndex())
+				+ ",\">0\")";
+		    }
+
+		};
+	addTotalCountRow("Total Taxa", sumAndCountFunction);
+
+    }
+
+    private void addTotalCountRow(String heading)
+	throws BadTemplateException {
+	Function<Cell,
+		String> countifFunction = new Function<>() {
+
+		    @Override
+		    public String apply(Cell cell) {
+			return "COUNTIF(" + CellReference
+				.convertNumToColString(cell
+					.getColumnIndex())
+				+ Integer.toString(
+					FIRST_SPECIES_ROW
+						+ 1)
+				+ ":"
+				+ CellReference
+					.convertNumToColString(
+						cell.getColumnIndex())
+				+ (cell.getRowIndex())
+				+ ",\">0\")";
+		    }
+
+		};
+	addTotalCountRow(heading, countifFunction);
     }
 
     private void addTotalCountRow(
@@ -579,14 +576,18 @@ public class WosEbirdSummary
 		cell.setCellFormula("sum("
 			+ CellReference
 				.convertNumToColString(0)
-			+ row.getRowNum() + 1 + ":"
+			+ (row.getRowNum() + 1) + ":"
 			+ CellReference
 				.convertNumToColString(
 					currentLastCell - 1)
-			+ row.getRowNum() + 1 + ")");
+			+ (row.getRowNum() + 1) + ")");
 
 	    }
 	}
+    }
+
+    private TripSummaryDataSourceFactory getDataSourceFactory() {
+	return this.dataSourceFactory;
     }
 
     private Map<String, OtherSpeciesType>
@@ -795,6 +796,7 @@ public class WosEbirdSummary
 	otherSpeciesObservation.setTripName(tripName);
     }
 
+
     private void saveData()
 	throws FileNotFoundException,
 	    IOException,
@@ -824,7 +826,6 @@ public class WosEbirdSummary
 	 * .createAdditionalSpecies(others), otherDataFile); }
 	 */
     }
-
 
     private void setFirstTripColumn(
 	Integer firstTripColumn) {
@@ -885,9 +886,5 @@ public class WosEbirdSummary
 		speciesRowToSum, tripColumnIndex);
 	outputCell.setCellValue(speciesSum);
 	}
-    }
-
-    private TripSummaryDataSourceFactory getDataSourceFactory() {
-	return this.dataSourceFactory;
     }
 }
