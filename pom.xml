@@ -7,7 +7,7 @@
         <relativePath>../3rivers-ashtanga-parent-pom</relativePath>
     </parent>
     <artifactId>wos_ebird_summary</artifactId>
-    <version>0.1.2-SNAPSHOT</version>
+    <version>0.1.2</version>
     <packaging>jar</packaging>
     <url>http://maven.apache.org</url>
     <properties>
