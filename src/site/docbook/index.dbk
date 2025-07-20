@@ -158,7 +158,7 @@
 					,
 					<emphasis>Hybrid</emphasis>
 					, and
-					<emphasis>Spuh</emphasis>
+					<emphasis>Spuh</emphasis>.
 					<link
 						xl:href="https://support.ebird.org/en/support/solutions/articles/48000837816-the-ebird-taxonomy#anchorCategories">The eBird Taxonomy</link>
 					.
@@ -322,7 +322,7 @@ $ bin/wos-field-trip-summary.sh example-data-and-results/parameters.xml > >(tee 
 	<section>
 		<title>Description of Excel Workbooks used for input/output</title>
 		<para>Only the first worksheet of workbooks is used.</para>
-		<section xml:id="sect.workbook-source">
+		<section xml:id="sect.workbook-source" xreflabel="The Field Trip Summary Template Workbook">
 			<title>
 				<code>workbook-source</code>
 				: The Field Trip Summary Template Workbook
@@ -446,7 +446,7 @@ $ bin/wos-field-trip-summary.sh example-data-and-results/parameters.xml > >(tee 
 				</tbody>
 			</table>
 		</section>
-		<section xml:id="sect.ebird-data-workbook">
+		<section xml:id="sect.ebird-data-workbook" xreflabel="Field Trip Checklist Inventory">
 			<title>
 				<code>ebird-data-workbook</code>
 				: Field Trip Checklist Inventory
@@ -557,7 +557,7 @@ $ bin/wos-field-trip-summary.sh example-data-and-results/parameters.xml > >(tee 
 					<footnote>
 						<para>to enter a newline in Excel, use &lt;Alt> &lt;Return> (or
 							&lt;Option>&lt;Return> on a Mac)</para>
-					</footnote>
+					</footnote>, or commas.
 				</para>
 				<para>
 					Checklists can be identified either by the full Ebird URI (e.g
