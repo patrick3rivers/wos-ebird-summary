@@ -446,7 +446,7 @@ $ bin/wos-field-trip-summary.sh example-data-and-results/parameters.xml > >(tee 
 				</tbody>
 			</table>
 		</section>
-		<section>
+		<section xml:id="sect.ebird-data-workbook">
 			<title>
 				<code>ebird-data-workbook</code>
 				: Field Trip Checklist Inventory
@@ -575,6 +575,120 @@ $ bin/wos-field-trip-summary.sh example-data-and-results/parameters.xml > >(tee 
 					</footnote>
 				</para>
 			</section>
+		</section>
+	</section>
+	<section>
+		<title>Collecting Trip Reports and Checklists</title>
+		<para>
+			It is expected that one individual is responsible for collecting the
+			checklists for a trip; let's call them the
+			<emphasis>lister</emphasis>
+			. We're not adhering to Ebird expectations here, because the
+			checklist summarizes
+			<emphasis>all</emphasis>
+			the observations of the group; but that's life (The lister could
+			delegate this work, but the lister is responsible for submitting the
+			checklist data to you, the Coordinator).
+		</para>
+		<para>
+			Participants in the group should obtain the lister's contact
+			information and send the lister their ebird username; the lister can
+			then share the lists with the participants. The lister
+			<emphasis>shouldn't</emphasis>
+			share the list with the Coordinator.
+		</para>
+		<para>
+			Ideally, then, the lister uses the Trip Report feature of ebird (
+			<xref linkend="fig.trip-report-creation" />
+			) to create a Trip List that contains all the checklists -- and only
+			the checklists -- associated with the trip. The Coordinator can then
+			enter the trip report URI into the appropriate cell in the Field Trip
+			Checklist Inventory (
+			<xref linkend="sect.ebird-data-workbook" />
+			). A list of checklists IDs or URIs can also be sent to the
+			Contributer; a trip report merely serves as a convenient means of
+			identifying a set of checklists.
+		</para>
+		<figure>
+			<title>Trip Report Creation</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata
+						fileref="trip-report-creation.jpg"
+						width="6in"></imagedata>
+				</imageobject>
+			</mediaobject>
+		</figure>
+		<para>
+			Note that because we access the ebird data through the
+			<link xl:href="https://www.faintlake.com/eBird/compiler/">eBird checklist compiler
+			</link>
+			web page with no ebird credentials, Trip Reports with "Limited
+			Distributions" will not work.
+		</para>
+		<caution xml:id="note.ebird-checklists-disappear">
+			<title>Modifying an EBird Checklist makes data inaccessible!</title>
+			<para> If one of the checklists submitted by the lister is modified
+				by the lister, it's possible that the previous checklist number will
+				become unavailable!
+			</para>
+		</caution>
+		<section>
+			<title>Inside Baseball Info on Trip Reports</title>
+			<para>
+				In order to avoid too much overhead when rerunning the program, the
+				program caches the data returned by the
+				<link xl:href="https://www.faintlake.com/eBird/compiler/">eBird checklist compiler
+				</link>
+				for a particular trip. The next time the program is run, this data
+				is only updated if the list of trip reports or checklists changes.
+			</para>
+			<para>
+				There are two implications here:
+				<itemizedlist>
+					<listitem>
+						<para>
+							Once the data has been collected for a trip, you don't have to
+							worry about
+							<xref linkend="note.ebird-checklists-disappear" />
+							; the checklist/Trip Report numbers in the spreadsheet are no
+							longer used, so it's okay if they disappear.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+							<emphasis>However,</emphasis>
+							if you
+							<emphasis>want</emphasis>
+							to update the data for a trip because one of the checklists has
+							changed, you
+							<emphasis>will not see the update!</emphasis>
+						</para>
+					</listitem>
+				</itemizedlist>
+			</para>
+			<para>The easiest way to take care of the 2nd issue would be: 
+				<orderedlist>
+					<listitem>
+					<para>
+						Copy the value of the "Trip Report/Checklists" column
+						for the trip and save it somewhere else;
+					</para>
+					</listitem>
+					<listitem>
+					<para>Erase the content of the "Trip Report/Checklists" cell;</para>
+					</listitem>
+					<listitem>
+						<para>Run the program (this will cause the old data to disappear from the cache)</para>
+					</listitem>
+					<listitem>
+						<para>Copy the old value of the cell back in;</para>
+					</listitem>
+					<listitem>
+						<para>Rerun the program (causing data to be refreshed from the Ebird database)</para>
+					</listitem>
+				</orderedlist>
+			</para>
 		</section>
 	</section>
 	<section>
